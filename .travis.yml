@@ -1,0 +1,23 @@
+language: java
+sudo: required
+before_install:
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- docker login -u "592115001" -p "$DOCKER_PASSWORD"
+- chmod +x mvnw
+install:
+- mvn install -Dmaven.javadoc.skip=true -B -V
+- ls -l
+- docker build --build-arg JAR_FILE=/target/project.jar -t 592115001/234project-backend  .
+- docker push 592115001/234project-backend
+- docker pull dto80/project234-frontend:latest
+cache:
+  directories:
+  - "$HOME/.m2"
+env:
+  global:
+  - secure: aGsrRHoQxXuRKLV1h1KUQ8eI94ydQ1p0ezyx+mdRd4W7mOj3/PA7P0Agz6m5Rp5dyVojQcY3gv2JbDN6/I81JBMOltiZkD+GA/eJWeKt8HitGjI4ifjOwH+bGzmo8wuuCX0qJSsPIesaLl0ZJEfNTrTECjckOKb6xaFqU/7dwl5akxAjdBCoA31o6vHIVNMU9K78P2ULF1VnSJ9RdLXC/+57czMxH/2fyHnSHviusmBk0shY3og+eUujDBEUany4wkgnBJEhMT0U2d1jKRw84FKMsYMn6X25wMANdAoqQpug4+RF3qQ+kyL6yk7k3JDq0bxdZ1aMFHUtwdfhMyS6MLxFS7LOSG1np3F/yyUyTEK02S3TMRyv8XKoDS5fPTABn9KxPiIdE1pfspQGZtXtYxX8IjF1Q00ORs+X3OBrN4IpNd6zSPS4R7aEpgkd52BslBliTIcjfrTLXlTUCm0rmBC5Eluq4ZrM17lQEk/L8me8Gnf8CeyjFCjKuHknHjiDgBgXXPUUCSFifqZ1kYs+Xpclow1HrRZj0EwXSWys1ZaZ/261UsX+fUxC3BX/hwNPSmU4c5sKEM4KuCpKXbMhKegH3M3wPiHzJ2sX1l0mq+pJ11TE2cG7IheuMtpQqJ+Fpmf/fAWtc2rROBl2fPtYV8bypDxq0ECuqwyoX1f76ZU=
+  - secure: SM2i5UmsMF01g5UB/2I3OqiBYsBTRfMkyhH6a62dPV/TD5eK9HlgTh9D2PZ0qI9QowOCH2cB/Ccdr81kPyAXD9e3nDpDSbsVWaScfCDXGxNVF2aE2Rv8eRhPQdk1rAbFLAZrmI5WqMSKtagTPydZBg2ifAML/uYZOMyX/Po9O/FM5EuQQ5HSSzo44/5WnNBwShV91gpjcHpsq0il23UJkar/PkyFt2SV/YPS+4xZa6b2ns3q7tO0hfhVbYEWZN6VP9//0Dxiq/w9PFRu2A2igUvoLfclfL9lnNfRMn/NDrU3t+4u29p+yoH8E7R5491aQME4OrPbrhDfpqOU+UzoSz+v3olSj4G4TLfVT1kBaUW8AK28jAIElj3afzfSm0N0arMgzDSEISyLlDAfbHO4PxG5ve+582OQd3El/HFHMAnkWdmALlR381LEGkEFaCuI6ajwiuGW9kmMKMc8PuM7Q8zOn2/De5vEz6KfDYXHKC85wrJp/kUt95zjLDaNEZBkx8LA6bEQCCXfKCSrQu88E6oVhtt57ov/fhV0zTMx9nWyu4uWscqH93aaF4lZKZ4K3K+7LmPSkIKxpiGU3ETeDLg3zHkF0EQuv3NGQneOvFwWZ3CpbRN67AWPma17XTSvEY18KZ/MLerUK2n4ByRkklJyQOboZ++DEd8x3/vcoE4=
